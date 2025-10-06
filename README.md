@@ -27,10 +27,24 @@ brew install hashicorp/tap/packer
 brew install cirruslabs/tart/tart
 ```
 
-Authenticate with GitHub Container Registry (GHCR):
+Authenticate with GitHub Container Registry (GHCR) using a Personal Access Token (PAT) with `read:packages` and `write:packages` scopes:
 ```bash
 export CR_PAT=<your_personal_access_token_with_write_packages>
-echo $CR_PAT | tart login ghcr.io -u <your_github_username> --password-stdin
+echo "$CR_PAT" | tart login ghcr.io --username <your_github_username> --password-stdin
+```
+
+---
+
+## ⚙️ Prepare the Xcode installer
+
+Before building, you need a local cache of the Xcode .xip installer:
+
+```bash
+brew install xcodesorg/made/xcodes aria2
+xcodes download 16.4 --directory ~/XcodesCache
+
+# Move file to remove suffix
+mv ~/XcodesCache/Xcode-16.4.0+16F6.xip ~/XcodesCache/Xcode_16.4.xip
 ```
 
 ---
