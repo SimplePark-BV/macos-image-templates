@@ -106,6 +106,8 @@ flutter --version
 
 ## 🧾 License
 
-Based on the upstream [CirrusLabs macOS Image Templates](https://github.com/cirruslabs/macos-image-templates)(MIT).
+This repository is based on the upstream [CirrusLabs macOS Image Templates](https://github.com/cirruslabs/macos-image-templates),  
+licensed under the [MIT License](./LICENSE).
 
-Modifications © 2025 SimplePark B.V.
+Modifications © 2025 SimplePark B.V.  
+All changes and additions remain under the same MIT License.
