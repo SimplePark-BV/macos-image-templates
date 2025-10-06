@@ -12,14 +12,100 @@ The following image variants are currently available:
 
 See a full list of VMs available [here](https://github.com/orgs/cirruslabs/packages?tab=packages&q=macos-).
 
-## Release Cadence
+---
 
-Once a new version of Xcode is released, we will initiate a GitHub release which will automatically build and push
-a new version of the `macos-{tahoe,sequoia}-xcode:N`. This generally happens the next weekend after a release.
-Please watch this repository releases to get notified about new images.
+## 🧱 Building a Custom PHP Image (SimplePark)
 
-## Update Cadence
+The `xcode-php.pkr.hcl` template builds a macOS image based on Ciruss' base templates, with **Xcode, Flutter, PHP 8.4, and Composer** preinstalled.
 
-Some of the images are regularly getting rebuild in order to update the pre-installed packages. 
+### 🧩 Prerequisites
 
-[This configuration file](.ci/cirrus.release.yml) defines images that are getting rebuilt monthly on the first Saturday of the month.
+Make sure you have the following installed locally:
+
+```bash
+brew install hashicorp/tap/packer
+brew install cirruslabs/tart/tart
+```
+
+Authenticate with GitHub Container Registry (GHCR):
+```bash
+export CR_PAT=<your_personal_access_token_with_write_packages>
+echo $CR_PAT | tart login ghcr.io -u <your_github_username> --password-stdin
+```
+
+---
+
+### 🛠️ Build the macos-sequoia-xcode-php:16.4 image
+
+Pull the base image
+
+```bash
+tart pull ghcr.io/cirruslabs/macos-sequoia-base:latest
+```
+
+Initialize the Packer environment (downloads the Tart plugin)
+
+```bash
+packer init templates/xcode.pkr.hcl
+```
+
+Runs the build for macOS Sequoia with Xcode 16.4:
+
+```bash
+packer build \
+  -var macos_version="sequoia" \
+  -var xcode_version='["16.4"]' \
+  -var php_version="8.4" \
+  templates/xcode-php.pkr.hcl
+```
+
+This will
+* Pull the `macos-sequoia-base` image.
+* Install Xcode 16.4 and related iOS components
+* Install Flutter (stable), Android SDK, and developer tools.
+* Install PHP 8.4 and Composer via Homebrew.
+* Package everything into a new Tart image: `sequoia-xcode-php:16.4`
+
+---
+
+### 📦 Push the image to GitHub Container Registry
+
+After the build finishes successfully:
+
+```bash
+tart tag sequoia-xcode-php:16.4 ghcr.io/simplepark-bv/macos-sequoia-xcode-php:16.4
+tart push ghcr.io/simplepark-bv/macos-sequoia-xcode-php:16.4
+```
+
+To also tag it as the latest PHP build
+
+```bash
+tart push ghcr.io/simplepark-bv/macos-sequoia-xcode-php:16.4 ghcr.io/simplepark-bv/macos-sequoia-xcode-php:latest
+```
+
+---
+
+### ✅ Verifying the Image
+
+You can verify the image locally:
+
+```bash
+tart run ghcr.io/simplepark-bv/macos-sequoia-xcode-php:16.4
+```
+
+Then inside the VM:
+
+```bash
+php -v
+composer -V
+xcodebuild -version
+flutter --version
+```
+
+---
+
+## 🧾 License
+
+Based on the upstream [CirrusLabs macOS Image Templates](https://github.com/cirruslabs/macos-image-templates)(MIT).
+
+Modifications © 2025 SimplePark B.V.
