@@ -87,14 +87,13 @@ This will
 After the build finishes successfully:
 
 ```bash
-tart tag sequoia-xcode-php:16.4 ghcr.io/simplepark-bv/macos-sequoia-xcode-php:16.4
-tart push ghcr.io/simplepark-bv/macos-sequoia-xcode-php:16.4
+tart push sequoia-xcode-php:16.4 ghcr.io/simplepark-bv/macos-sequoia-xcode-php:16.4
 ```
 
 To also tag it as the latest PHP build
 
 ```bash
-tart push ghcr.io/simplepark-bv/macos-sequoia-xcode-php:16.4 ghcr.io/simplepark-bv/macos-sequoia-xcode-php:latest
+tart push sequoia-xcode-php:16.4 ghcr.io/simplepark-bv/macos-sequoia-xcode-php:16.4 ghcr.io/simplepark-bv/macos-sequoia-xcode-php:latest
 ```
 
 ---
