@@ -164,38 +164,6 @@ build {
     }
   }
 
-  dynamic "provisioner" {
-    for_each = length(var.xcode_version) > 2 ? [2] : []
-    labels = ["shell"]
-    content {
-      inline = [
-        "source ~/.zprofile",
-        "sudo xcodes select '${var.xcode_version[2]}'",
-        "xcodebuild -downloadAllPlatforms",
-      ]
-    }
-  }
-
-  dynamic "provisioner" {
-    for_each = length(var.xcode_version) > 1 ? [1] : []
-    labels = ["shell"]
-    content {
-      inline = [
-        "source ~/.zprofile",
-        "sudo xcodes select '${var.xcode_version[1]}'",
-        "xcodebuild -downloadAllPlatforms",
-      ]
-    }
-  }
-
-  provisioner "shell" {
-    inline = [
-      "source ~/.zprofile",
-      "sudo xcodes select '${var.xcode_version[0]}'",
-      "xcodebuild -downloadAllPlatforms",
-    ]
-  }
-
   provisioner "shell" {
     inline = concat(
       ["source ~/.zprofile"],
