@@ -60,7 +60,7 @@ tart pull ghcr.io/cirruslabs/macos-sequoia-base:latest
 Initialize the Packer environment (downloads the Tart plugin)
 
 ```bash
-packer init templates/xcode.pkr.hcl
+packer init templates/xcode-php.pkr.hcl
 ```
 
 Runs the build for macOS Sequoia with Xcode 16.4:
